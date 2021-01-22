@@ -18,6 +18,7 @@ private const val TAG = "MainActivity"
 private const val KEY_INDEX = "index"
 private const val REQUEST_CODE_CHEAT = 0
 private const val EXTRA_ANSWER_SHOWN = "com.example.newgeoquiz.answer_shown"
+private const val EXTRA_NUMBER_CHEAT = "com.example.newgeoquiz.number_cheat"
 
 
 class MainActivity : AppCompatActivity() {
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
 
         nextButton.setOnClickListener{ view:View ->
             quizViewModel.moveToNext()
+            quizViewModel.isCheater = false
             updateQuestion()
         }
 
@@ -76,6 +78,8 @@ class MainActivity : AppCompatActivity() {
         }
         if (requestCode == REQUEST_CODE_CHEAT){
             quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false)?: false
+            var deltaCheating = data?.getIntExtra(EXTRA_NUMBER_CHEAT, 0)?: 0
+            quizViewModel.cheating = quizViewModel.cheating + deltaCheating
         }
     }
 
@@ -91,6 +95,10 @@ class MainActivity : AppCompatActivity() {
             else -> R.string.incorrect_toast
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
+
+        var cheatingToast = Toast.makeText(this, "Cheat number ${quizViewModel.cheating}", Toast.LENGTH_SHORT)
+        cheatingToast.setGravity(Gravity.TOP, 0,0)
+        cheatingToast.show()
     }
 
 
