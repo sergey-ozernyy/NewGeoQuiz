@@ -80,6 +80,9 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false)?: false
             var deltaCheating = data?.getIntExtra(EXTRA_NUMBER_CHEAT, 0)?: 0
             quizViewModel.cheating = quizViewModel.cheating + deltaCheating
+            if (quizViewModel.cheating >= 3){
+                cheatButton.isClickable = false
+            }
         }
     }
 
